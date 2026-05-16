@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: linear-gradient(-45deg, #4f46e5, #9333ea, #06b6d4, #3b82f6);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 30px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        p {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 13px;
+            color: #fff;
+            margin-bottom: 6px;
+            display: block;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select option {
+            color: black;
+        }
+
+        input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        select:focus, input:focus {
+            border: 1px solid #fff;
+            background: rgba(255,255,255,0.25);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .result {
+            margin-top: 25px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+        }
+
+        .result b {
+            font-size: 32px;
+            color: #00ffcc;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h1>🎓 Student Performance Predictor</h1>
+        <p>Predict Maths Score using ML Model</p>
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+
+            <div class="grid">
+
+                <div>
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Ethnicity</label>
+                    <select name="ethnicity" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="group A">Group A</option>
+                        <option value="group B">Group B</option>
+                        <option value="group C">Group C</option>
+                        <option value="group D">Group D</option>
+                        <option value="group E">Group E</option>
+                    </select>
+                </div>
+
+                <div class="full">
+                    <label>Parental Education</label>
+                    <select name="parental_level_of_education" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="associate's degree">Associate's degree</option>
+                        <option value="bachelor's degree">Bachelor's degree</option>
+                        <option value="high school">High school</option>
+                        <option value="master's degree">Master's degree</option>
+                        <option value="some college">Some college</option>
+                        <option value="some high school">Some high school</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Lunch</label>
+                    <select name="lunch" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="standard">Standard</option>
+                        <option value="free/reduced">Free/Reduced</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Test Course</label>
+                    <select name="test_preparation_course" required>
+                        <option disabled selected value="">Select</option>
+                        <option value="none">None</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Reading Score</label>
+                    <input type="number" name="reading_score" min="0" max="100" placeholder="Enter score" required>
+                </div>
+
+                <div>
+                    <label>Writing Score</label>
+                    <input type="number" name="writing_score" min="0" max="100" placeholder="Enter score" required>
+                </div>
+
+            </div>
+
+            <button type="submit">✨ Predict Maths Score</button>
+
+        </form>
+
+        {% if results %}
+        <div class="result">
+            Predicted Score: <br>
+            <b>{{ results }}</b>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>
